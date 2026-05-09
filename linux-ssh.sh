@@ -25,8 +25,8 @@ fi
 # unzip -o ngrok-v3-stable-linux-386.zip
 # chmod +x ./ngrok
 
-echo "### Update user: $USER password ###"
-echo -e "$LINUX_USER_PASSWORD\n$LINUX_USER_PASSWORD" | sudo passwd "$USER"
+# echo "### Update user: $USER password ###"
+# echo -e "$LINUX_USER_PASSWORD\n$LINUX_USER_PASSWORD" | sudo passwd "$USER"
 
 # echo "### Start ngrok proxy for 22 port ###"
 
@@ -49,4 +49,52 @@ echo -e "$LINUX_USER_PASSWORD\n$LINUX_USER_PASSWORD" | sudo passwd "$USER"
 #   exit 4
 # fi
 
-ssh -R 80:localhost:22 serveo.net
+# ------------------------------------------------------------
+# Download bore binary for Linux 386 (32-bit) from GitHub
+# ------------------------------------------------------------
+BORE_VERSION="v0.5.0"                     # latest stable as of writing
+BORE_URL="https://github.com/ekzhang/bore/releases/download/${BORE_VERSION}/bore-${BORE_VERSION}-i686-unknown-linux-musl.tar.gz"
+
+wget -q "$BORE_URL"
+tar -xzf "bore-${BORE_VERSION}-i686-unknown-linux-musl.tar.gz"
+chmod +x ./bore
+rm "bore-${BORE_VERSION}-i686-unknown-linux-musl.tar.gz"   # optional cleanup
+
+# ------------------------------------------------------------
+# (Optional) Update user password – kept from your original script
+# ------------------------------------------------------------
+echo "### Update user: $USER password ###"
+echo -e "$LINUX_USER_PASSWORD\n$LINUX_USER_PASSWORD" | sudo passwd "$USER"
+
+# ------------------------------------------------------------
+# Start bore tunnel for port 22 (SSH)
+# ------------------------------------------------------------
+echo "### Start bore proxy for 22 port ###"
+
+rm -f .bore.log
+# Bore writes its output (the public address) to stderr; redirect both stdout and stderr to log
+./bore local 22 --to bore.pub > .bore.log 2>&1 &
+
+sleep 5   # give it a moment to establish connection
+
+# ------------------------------------------------------------
+# Parse the public address from the log
+# ------------------------------------------------------------
+PUBLIC_ADDR=$(grep -o -E "bore.pub:[0-9]+" .bore.log | head -1)
+
+if [[ -n "$PUBLIC_ADDR" ]]; then
+  PORT=$(echo "$PUBLIC_ADDR" | cut -d':' -f2)
+  echo ""
+  echo "=========================================="
+  echo "To connect: ssh $USER@bore.pub -p $PORT"
+  echo "or connect with: ssh (Your Linux Username)@bore.pub -p $PORT"
+  echo "=========================================="
+else
+  # Check for common errors (e.g., bore.pub unreachable, port conflict)
+  echo "Failed to establish bore tunnel. Log output:"
+  cat .bore.log
+  exit 4
+fi
+
+# Keep the script running (or let it exit – bore runs in background)
+# To keep the container/process alive, you might add: wait $!
