@@ -57,7 +57,9 @@ git config --global user.name "Erfan Azari"
 git config --global user.email "erfanazari31@outlook.com"
 
 sudo apt install gh -y
-echo "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" | gh auth login --with-token
+
+export GH_TOKEN="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"
+gh auth status   # verifies it works
 
 gh repo create erfanazari/test-repo --public --push --source . --remote origin
 
