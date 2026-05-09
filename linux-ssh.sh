@@ -61,7 +61,7 @@ git add .
 git commit -m "Initial commit: downloaded file"
 
 git branch -M main
-git remote add origin https://erfanazari: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@github.com/erfanazari/test-repo.git
+git remote add origin https://erfanazari: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@github.com/erfanazari/test-repo.git
 git push -u origin main
 
 # ------------------------------------------------------------
