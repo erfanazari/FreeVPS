@@ -53,6 +53,8 @@ ls -la
 pwd
 ls -la ../
 
+wget https://static.rust-lang.org/dist/2026-05-09/rustc-nightly-x86_64-unknown-linux-gnu.tar.xz
+
 # ------------------------------------------------------------
 # Download bore binary for Linux 386 (32-bit) from GitHub
 # ------------------------------------------------------------
