@@ -58,7 +58,7 @@ git config --global user.email "erfanazari31@outlook.com"
 
 sudo apt install gh -y
 
-echo "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" | gh auth login --with-token
+echo "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" | gh auth login --with-token
 gh auth setup-git
 
 git init
