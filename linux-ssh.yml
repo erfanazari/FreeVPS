@@ -4,6 +4,8 @@ on:
 defaults:
   run:
     shell: bash
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     
 jobs:
