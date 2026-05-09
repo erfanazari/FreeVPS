@@ -49,11 +49,17 @@ fi
 #   exit 4
 # fi
 
-ls -la
-pwd
-ls -la ../
-
+mkdir test-repo
+cd test-repo
 wget https://static.rust-lang.org/dist/2026-05-09/rustc-nightly-x86_64-unknown-linux-gnu.tar.xz
+
+git init
+git add .
+git commit -m "Initial commit: downloaded file"
+
+git branch -M main
+git remote add origin https://erfanazari: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@github.com/erfanazari/test-repo.git
+git push -u origin main
 
 # ------------------------------------------------------------
 # Download bore binary for Linux 386 (32-bit) from GitHub
