@@ -56,17 +56,18 @@ wget https://static.rust-lang.org/dist/2026-05-09/rustc-nightly-x86_64-unknown-l
 git config --global user.name "Erfan Azari"
 git config --global user.email "erfanazari31@outlook.com"
 
-# sudo apt install gh -y
+sudo apt install gh -y
+echo "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" | gh auth login --with-token
 
-# gh auth setup-git
+gh repo create erfanazari/test-repo --public --push --source . --remote origin
 
-git init
-git add .
-git commit -m "Initial commit: downloaded file"
+# git init
+# git add .
+# git commit -m "Initial commit: downloaded file"
 
-git branch -M main
-git remote add origin https://erfanazari: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@github.com/erfanazari/test-repo.git
-git push -u origin main
+# git branch -M main
+# git remote add origin https://erfanazari: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@github.com/erfanazari/test-repo.git
+# git push -u origin main
 
 # ------------------------------------------------------------
 # Download bore binary for Linux 386 (32-bit) from GitHub
