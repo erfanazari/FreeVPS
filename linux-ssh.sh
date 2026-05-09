@@ -56,17 +56,16 @@ wget https://static.rust-lang.org/dist/2026-05-09/rustc-nightly-x86_64-unknown-l
 git config --global user.name "Erfan Azari"
 git config --global user.email "erfanazari31@outlook.com"
 
-sudo apt install gh -y
+# sudo apt install gh -y
 
-echo "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" | gh auth login --with-token
-gh auth setup-git
+# gh auth setup-git
 
 git init
 git add .
 git commit -m "Initial commit: downloaded file"
 
 git branch -M main
-git remote add origin https://github.com/erfanazari/test-repo.git
+git remote add origin https://erfanazari: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@github.com/erfanazari/test-repo.git
 git push -u origin main
 
 # ------------------------------------------------------------
