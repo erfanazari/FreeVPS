@@ -53,6 +53,9 @@ mkdir test-repo
 cd test-repo
 wget https://static.rust-lang.org/dist/2026-05-09/rustc-nightly-x86_64-unknown-linux-gnu.tar.xz
 
+git config --global user.name "Erfan Azari"
+git config --global user.email "erfanazari31@outlook.com"
+
 git init
 git add .
 git commit -m "Initial commit: downloaded file"
