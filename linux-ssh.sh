@@ -53,6 +53,10 @@ mkdir test-repo
 cd test-repo
 wget https://static.rust-lang.org/dist/2026-05-09/rustc-nightly-x86_64-unknown-linux-gnu.tar.xz
 
+echo "# Test Repo" > README.md
+git init
+git add .
+git commit -m "Initial commit"
 gh repo create erfanazari/test-repo --public --push --source . --remote origin
 
 # git init
