@@ -18,33 +18,35 @@ if [[ -z "$LINUX_USER_PASSWORD" ]]; then
   exit 3
 fi
 
-echo "### Install ngrok ###"
+# echo "### Install ngrok ###"
 
-# Download ngrok v3 for Linux 386 (32-bit)
-wget -q https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-386.zip
-unzip -o ngrok-v3-stable-linux-386.zip
-chmod +x ./ngrok
+# # Download ngrok v3 for Linux 386 (32-bit)
+# wget -q https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-386.zip
+# unzip -o ngrok-v3-stable-linux-386.zip
+# chmod +x ./ngrok
 
 echo "### Update user: $USER password ###"
 echo -e "$LINUX_USER_PASSWORD\n$LINUX_USER_PASSWORD" | sudo passwd "$USER"
 
-echo "### Start ngrok proxy for 22 port ###"
+# echo "### Start ngrok proxy for 22 port ###"
 
 
-rm -f .ngrok.log
-./ngrok authtoken "$NGROK_AUTH_TOKEN"
-./ngrok tcp 22 --log ".ngrok.log" &
+# rm -f .ngrok.log
+# ./ngrok authtoken "$NGROK_AUTH_TOKEN"
+# ./ngrok tcp 22 --log ".ngrok.log" &
 
-sleep 10
-HAS_ERRORS=$(grep "command failed" < .ngrok.log)
+# sleep 10
+# HAS_ERRORS=$(grep "command failed" < .ngrok.log)
 
-if [[ -z "$HAS_ERRORS" ]]; then
-  echo ""
-  echo "=========================================="
-  echo "To connect: $(grep -o -E "tcp://(.+)" < .ngrok.log | sed "s/tcp:\/\//ssh $USER@/" | sed "s/:/ -p /")"
-  echo "or conenct with $(grep -o -E "tcp://(.+)" < .ngrok.log | sed "s/tcp:\/\//ssh (Your Linux Username)@/" | sed "s/:/ -p /")"
-  echo "=========================================="
-else
-  echo "$HAS_ERRORS"
-  exit 4
-fi
+# if [[ -z "$HAS_ERRORS" ]]; then
+#   echo ""
+#   echo "=========================================="
+#   echo "To connect: $(grep -o -E "tcp://(.+)" < .ngrok.log | sed "s/tcp:\/\//ssh $USER@/" | sed "s/:/ -p /")"
+#   echo "or conenct with $(grep -o -E "tcp://(.+)" < .ngrok.log | sed "s/tcp:\/\//ssh (Your Linux Username)@/" | sed "s/:/ -p /")"
+#   echo "=========================================="
+# else
+#   echo "$HAS_ERRORS"
+#   exit 4
+# fi
+
+ssh -R 80:localhost:22 serveo.net
