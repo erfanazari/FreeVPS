@@ -53,13 +53,6 @@ mkdir test-repo
 cd test-repo
 wget https://static.rust-lang.org/dist/2026-05-09/rustc-nightly-x86_64-unknown-linux-gnu.tar.xz
 
-git config --global user.name "Erfan Azari"
-git config --global user.email "erfanazari31@outlook.com"
-
-sudo apt install gh -y
-
-gh auth login --with-token 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
-
 gh repo create erfanazari/test-repo --public --push --source . --remote origin
 
 # git init
