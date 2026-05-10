@@ -124,42 +124,51 @@
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
-# Check root
 if [ "$EUID" -ne 0 ]; then
     echo -e "${RED}Please run as root (sudo).${NC}"
     exit 1
 fi
 
-# Get latest version from GitHub API
+# Get latest version
 echo -e "${GREEN}Fetching latest GooseRelayVPN release...${NC}"
 LATEST_VERSION=$(curl -s https://api.github.com/repos/kianmhz/GooseRelayVPN/releases/latest | grep '"tag_name"' | cut -d '"' -f4)
 if [ -z "$LATEST_VERSION" ]; then
-    echo -e "${RED}Failed to fetch latest version. Check internet or GitHub API.${NC}"
+    echo -e "${RED}Failed to fetch latest version.${NC}"
     exit 1
 fi
 echo -e "Latest version: ${LATEST_VERSION}"
 
-# Download server binary
+# Download
 ARCH="linux-amd64"
 DOWNLOAD_URL="https://github.com/kianmhz/GooseRelayVPN/releases/download/${LATEST_VERSION}/GooseRelayVPN-server-${LATEST_VERSION}-${ARCH}.tar.gz"
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
-echo -e "${GREEN}Downloading server from ${DOWNLOAD_URL}...${NC}"
+echo -e "${GREEN}Downloading server...${NC}"
 curl -L -o server.tar.gz "$DOWNLOAD_URL"
 tar -xzf server.tar.gz
-chmod +x goose-server
 
-# Move binary to /usr/local/bin
+# Find the binary (it's inside a versioned directory)
+EXTRACTED_DIR=$(find . -maxdepth 1 -type d -name "GooseRelayVPN-server-*" | head -1)
+if [ -z "$EXTRACTED_DIR" ]; then
+    echo -e "${RED}Extraction failed – no directory found.${NC}"
+    exit 1
+fi
+cd "$EXTRACTED_DIR"
+if [ ! -f goose-server ]; then
+    echo -e "${RED}goose-server binary not found in extracted files.${NC}"
+    exit 1
+fi
+chmod +x goose-server
 mv goose-server /usr/local/bin/
 echo -e "${GREEN}Server binary installed to /usr/local/bin/goose-server${NC}"
 
 # Generate tunnel key
 TUNNEL_KEY=$(openssl rand -hex 32)
-echo -e "${GREEN}Tunnel key generated: ${YELLOW}${TUNNEL_KEY}${NC}"
+echo -e "${GREEN}Tunnel key: ${YELLOW}${TUNNEL_KEY}${NC}"
 
-# Create config directory
+# Config
 mkdir -p /etc/goose-relay
 cat > /etc/goose-relay/server_config.json <<EOF
 {
@@ -168,16 +177,13 @@ cat > /etc/goose-relay/server_config.json <<EOF
   "tunnel_key": "${TUNNEL_KEY}"
 }
 EOF
-echo -e "${GREEN}Server config written to /etc/goose-relay/server_config.json${NC}"
 
-# Open firewall
+# Firewall
 if command -v ufw &> /dev/null; then
-    echo -e "${GREEN}Opening port 8443 in ufw...${NC}"
     ufw allow 8443/tcp
 fi
-# Also allow port for bore tunnel (if used) – not needed for incoming
 
-# Create systemd service for goose-server
+# systemd service
 cat > /etc/systemd/system/goose-relay.service <<EOF
 [Unit]
 Description=GooseRelayVPN exit server
