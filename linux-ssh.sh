@@ -227,7 +227,7 @@ echo "  1) bore (free, no account, runs in background)"
 echo "  2) ngrok (requires auth token, manual setup)"
 echo "  3) Skip (you will set up your own tunnel later)"
 # read -p "Choose [1/2/3]: " tunnel_choice
-tunnel_choice = "1"
+tunnel_choice="1"
 echo "  Default is 1 for bore."
 
 if [ "$tunnel_choice" = "1" ]; then
