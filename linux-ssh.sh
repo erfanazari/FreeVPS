@@ -200,6 +200,7 @@ systemctl daemon-reload
 systemctl enable goose-relay
 systemctl start goose-relay
 systemctl status goose-relay
+journalctl -u service-name.service -n 50 --no-pager
 echo -e "${GREEN}goose-server service started and enabled.${NC}"
 
 # Health check
