@@ -253,7 +253,7 @@ if [ "$tunnel_choice" = "1" ]; then
         PUBLIC_URL="(check /var/log/bore/bore.log for the URL after a few seconds)"
     fi
     echo -e "${GREEN}Your public bore tunnel URL: ${YELLOW}${PUBLIC_URL}${NC}"
-    sleep 10s
+    sleep 20s
     cat /var/log/bore/bore.log
     echo -e "You will use this URL (without trailing slash) as the VPS_URL in Google Apps Script (Code.gs)."
     # Optional: create a systemd service for bore (commented)
