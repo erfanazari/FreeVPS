@@ -165,7 +165,7 @@ mv goose-server /usr/local/bin/
 echo -e "${GREEN}Server binary installed to /usr/local/bin/goose-server${NC}"
 
 # Generate tunnel key
-TUNNEL_KEY="AKfycbwVCZLIN8t_JuXye85I8pH1XQnEIARWkVf5wrD2_w9BTa2Aud5vm0z99Zj0AKovtqeMqQ"
+TUNNEL_KEY=AKfycbwVCZLIN8t_JuXye85I8pH1XQnEIARWkVf5wrD2_w9BTa2Aud5vm0z99Zj0AKovtqeMqQ
 echo -e "${GREEN}Tunnel key: ${YELLOW}${TUNNEL_KEY}${NC}"
 
 # Config
